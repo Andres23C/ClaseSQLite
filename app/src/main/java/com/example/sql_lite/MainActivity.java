@@ -50,19 +50,16 @@ public class MainActivity extends AppCompatActivity {
         String name = nombre.getText().toString();
         String telephone = telefono.getText().toString();
         if (!document.isEmpty()){
-            Cursor fila  = baseDatos.rawQuery("SELECT cedula FROM usuario WHERE cedula ="+document,null);
+            Cursor fila  = baseDatos.rawQuery("SELECT cedula, nombre, telefono FROM usuario WHERE cedula ="+document,null);
             if (fila.moveToFirst()){
                 String idPersona = fila.getString(0);
-                Toast.makeText(this, idPersona, Toast.LENGTH_SHORT).show();
                 fila.close();
                 if (!idPersona.isEmpty()){
                     Toast.makeText(this, "El registro ya existe", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(this, "No existe usuario", Toast.LENGTH_SHORT).show();
                 }
             }
         }
-        else if(!name.isEmpty() && !telephone.isEmpty()){
+        if( !document.isEmpty() && !name.isEmpty() && !telephone.isEmpty()){
 
             ContentValues registro  = new ContentValues();
             //Almacenar datos
@@ -95,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             //Cargar la información que vamos a buscar en la variable fila de tipo Cursor
             Cursor fila  = BasedeDatos.rawQuery("select nombre, telefono from usuario where cedula ="+document,null);
             if (fila.moveToFirst()){
+
                 //Asignar los datos de consulta
                 nombre.setText(fila.getString(0));
                 telefono.setText(fila.getString(1));
