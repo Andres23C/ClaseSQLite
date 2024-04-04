@@ -13,7 +13,7 @@ public class AdminBD extends SQLiteOpenHelper {
     //Creación de la base de datos
     @Override
     public void onCreate(SQLiteDatabase baseDatos) {
-        baseDatos.execSQL("CREATE TABLE usuario(cedula int primary key, nombre text, telefono int)");
+        baseDatos.execSQL("CREATE TABLE IF NOT EXISTS usuario(cedula int primary key, nombre text, telefono int)");
     }
 
     @Override

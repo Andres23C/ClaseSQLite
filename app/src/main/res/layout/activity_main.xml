@@ -106,11 +106,10 @@
         android:layout_weight="1">
 
         <Button
-
+            android:id="@+id/consultar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/consultar"
-            android:onClick="consultar">
+            android:text="@string/consultar">
 
         </Button>
 
@@ -123,11 +122,10 @@
         android:layout_weight="1">
 
         <Button
-
+            android:id="@+id/registrar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/registrar"
-            android:onClick="registrar">
+            android:text="@string/registrar">
 
         </Button>
 

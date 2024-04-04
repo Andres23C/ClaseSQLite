@@ -8,11 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private EditText cedula,nombre, telefono;
+    Button consulta,registra;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,25 +23,47 @@ public class MainActivity extends AppCompatActivity {
         cedula =(EditText) findViewById(R.id.cedula);
         nombre =(EditText) findViewById(R.id.nombre);
         telefono =(EditText) findViewById(R.id.telefono);
+        consulta = (Button) findViewById(R.id.consultar);
+        registra = (Button) findViewById(R.id.registrar);
+
+        consulta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                consultar(view);
+            }
+        });
+
+        registra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registrar(view);
+            }
+        });
     }
 
     public void registrar(View view){
-        AdminBD admin = new AdminBD(this,"BaseDatos", null,1);
+        //String ConsultaSQL = "SELECT cedula FROM usuario WHERE cedula =";
+        AdminBD admin = new AdminBD(this,"mibase", null,1);
         //Abrir la base de datos (instanciar la base de datos)
         SQLiteDatabase baseDatos = admin.getWritableDatabase();
         String document = cedula.getText().toString();
         String name = nombre.getText().toString();
         String telephone = telefono.getText().toString();
         if (!document.isEmpty()){
-            Cursor fila  = baseDatos.rawQuery("select cedula, nombre, telefono from usuario where cedula ="+document,null);
+            Cursor fila  = baseDatos.rawQuery("SELECT cedula FROM usuario WHERE cedula ="+document,null);
             if (fila.moveToFirst()){
                 String idPersona = fila.getString(0);
+                Toast.makeText(this, idPersona, Toast.LENGTH_SHORT).show();
+                fila.close();
                 if (!idPersona.isEmpty()){
                     Toast.makeText(this, "El registro ya existe", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this, "No existe usuario", Toast.LENGTH_SHORT).show();
                 }
             }
         }
-        else if(!document.isEmpty() && !name.isEmpty() && !telephone.isEmpty()){
+        else if(!name.isEmpty() && !telephone.isEmpty()){
+
             ContentValues registro  = new ContentValues();
             //Almacenar datos
             registro.put("cedula", document);
@@ -61,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public  void consultar(View view){
-        AdminBD admin = new AdminBD(this,"BaseDatos",null,1);
+        AdminBD admin = new AdminBD(this,"mibase",null,1);
         SQLiteDatabase BasedeDatos = admin.getWritableDatabase();
         String document = cedula.getText().toString();
         //String name = nombre.getText().toString();
